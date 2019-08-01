@@ -1,10 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>项目管理列表</title>
+    <#include "/header.html">
 </head>
 <body>
-1111111111111
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+            <div class="form-group col-sm-1">
+                <input type="text" class="form-control" v-model="q.projectCode" @keyup.enter="query" placeholder="项目编号">
+            </div>
+            <div class="form-group col-sm-1">
+                <input type="text" class="form-control" v-model="q.ProjectName" @keyup.enter="query" placeholder="项目名称">
+            </div>
+            <div class="form-group col-sm-1">
+                <input type="text" class="form-control" v-model="q.exclusiveUser" @keyup.enter="query" placeholder="用户名称">
+            </div>
+            <a class="btn btn-default" @click="query">查询</a>
+            <#if shiro.hasPermission("pro:save")>
+                <a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+            </#if>
+            <#if shiro.hasPermission("pro:update")>
+                <a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+            </#if>
+            <#if shiro.hasPermission("pro:delete")>
+                <a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+            </#if>
+        </div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-2 control-label">项目编号</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="project.projectCode" placeholder="项目编号"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">项目名称</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="project.projectName" placeholder="项目名称"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">使用者</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="project.exclusiveUser" placeholder="使用者"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">项目描述</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="project.projectDesc" placeholder="项目描述"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button"  id="btnSaveOrUpdate" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="${request.contextPath}/statics/js/modules/pro/project.js?_${.now?long}"></script>
 </body>
 </html>

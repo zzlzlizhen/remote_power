@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.remote.zkwladmin.modules.pro.dao.ProjectDao">
+    <sql id="cloums">
+        project_id as projectId,
+        project_code as projectCode,
+        project_name as projectName,
+        project_desc as projectDesc,
+        city_id as cityId,
+        exclusive_user as exclusiveUser,
+        run_status as runStatus,
+        sum_count as sumCount,
+        gateway_count as gatewayCount,
+        fault_count as faultCount,
+        call_police_count as callPoliceCount,
+        is_del as isDel,
+        create_user as createUser,
+        create_name as createName,
+        create_time as createTime,
+        update_user as updateUser,
+        update_time as updateTime,
+        project_status as projectStatus
+    </sql>
+    <sql id="key">
+        <trim suffixOverrides=",">
+            <if test="projectEntity.projectId != null and projectEntity.projectId != ''">
+                project_id,
+            </if>
+            <if test="projectEntity.projectCode != null and projectEntity.projectCode != ''">
+                project_code,
+            </if>
+            <if test="projectEntity.projectName != null and projectEntity.projectName != ''">
+                project_name,
+            </if>
+            <if test="projectEntity.projectDesc != null and projectEntity.projectDesc != ''">
+                project_desc,
+            </if>
+            <if test="projectEntity.cityId != null">
+                city_id,
+            </if>
+            <if test="projectEntity.exclusiveUser != null">
+                exclusive_user,
+            </if>
+            <if test="projectEntity.runStatus != null">
+                run_status,
+            </if>
+            <if test="projectEntity.sumCount != null">
+                sum_count,
+            </if>
+            <if test="projectEntity.gatewayCount != null">
+                gateway_count,
+            </if>
+            <if test="projectEntity.faultCount != null">
+                fault_count,
+            </if>
+            <if test="projectEntity.callPoliceCount != null">
+                call_police_count,
+            </if>
+            <if test="projectEntity.isDel != null">
+                is_del,
+            </if>
+            <if test="projectEntity.createUser != null">
+                create_user,
+            </if>
+            <if test="projectEntity.createName != null and projectEntity.createName != ''">
+                create_name,
+            </if>
+            <if test="projectEntity.createTime != null">
+                create_time,
+            </if>
+            <if test="projectEntity.updateUser != null">
+                update_user,
+            </if>
+            <if test="projectEntity.updateTime != null">
+                update_time,
+            </if>
+            <if test="projectEntity.projectStatus != null">
+                project_status
+            </if>
+        </trim>
+    </sql>
+    <sql id="values">
+        <trim suffixOverrides=",">
+            <if test="projectEntity.projectId != null and projectEntity.projectId != ''">
+                #{projectEntity.projectId},
+            </if>
+            <if test="projectEntity.projectCode != null and projectEntity.projectCode != ''">
+                #{projectEntity.projectCode},
+            </if>
+            <if test="projectEntity.projectName != null and projectEntity.projectName != ''">
+                #{projectEntity.projectName},
+            </if>
+            <if test="projectEntity.projectDesc != null and projectEntity.projectDesc != ''">
+                #{projectEntity.projectDesc},
+            </if>
+            <if test="projectEntity.cityId != null">
+                #{projectEntity.cityId},
+            </if>
+            <if test="projectEntity.exclusiveUser != null">
+                #{projectEntity.exclusiveUser},
+            </if>
+            <if test="projectEntity.runStatus != null">
+                #{projectEntity.runStatus},
+            </if>
+            <if test="projectEntity.sumCount != null">
+                #{projectEntity.sumCount},
+            </if>
+            <if test="projectEntity.gatewayCount != null">
+                #{projectEntity.gatewayCount},
+            </if>
+            <if test="projectEntity.faultCount != null">
+                #{projectEntity.faultCount},
+            </if>
+            <if test="projectEntity.callPoliceCount != null">
+                #{projectEntity.callPoliceCount},
+            </if>
+            <if test="projectEntity.isDel != null">
+                #{projectEntity.isDel},
+            </if>
+            <if test="projectEntity.createUser != null">
+                #{projectEntity.createUser},
+            </if>
+            <if test="projectEntity.createName != null and projectEntity.createName != ''">
+                #{projectEntity.createName},
+            </if>
+            <if test="projectEntity.createTime != null">
+                #{projectEntity.createTime},
+            </if>
+            <if test="projectEntity.updateUser != null">
+                #{projectEntity.updateUser},
+            </if>
+            <if test="projectEntity.updateTime != null">
+                #{projectEntity.updateTime},
+            </if>
+            <if test="projectEntity.projectStatus != null">
+                #{projectEntity.projectStatus}
+            </if>
+        </trim>
+    </sql>
+    <insert id="add" parameterType="com.remote.zkwladmin.modules.pro.entity.ProjectEntity">
+        insert into sys_user (<include refid="key"/>)
+        values(<include refid="values"/>)
+    </insert>
+    <update id="update" parameterType="com.remote.zkwladmin.modules.pro.entity.ProjectEntity">
+        update sys_user
+        <set>
+            <if test="projectEntity.projectCode != null and projectEntity.projectCode != ''">
+                project_code = #{projectEntity.projectCode},
+            </if>
+            <if test="projectEntity.projectName != null and projectEntity.projectName != ''">
+                project_name = #{projectEntity.projectName},
+            </if>
+            <if test="projectEntity.projectDesc != null and projectEntity.projectDesc != ''">
+                project_desc = #{projectEntity.projectDesc},
+            </if>
+            <if test="projectEntity.cityId != null">
+                projectEntity.city_id = #{projectEntity.cityId},
+            </if>
+            <if test="projectEntity.exclusiveUser != null">
+                exclusive_user = #{projectEntity.exclusiveUser},
+            </if>
+            <if test="projectEntity.runStatus != null">
+                run_status = #{projectEntity.runStatus},
+            </if>
+            <if test="projectEntity.sumCount != null">
+                sum_count = #{projectEntity.sumCount},
+            </if>
+            <if test="projectEntity.gatewayCount != null">
+                gateway_count = #{projectEntity.gatewayCount},
+            </if>
+            <if test="projectEntity.faultCount != null">
+                fault_count = #{projectEntity.faultCount},
+            </if>
+            <if test="projectEntity.callPoliceCount != null">
+                call_police_count = #{projectEntity.callPoliceCount},
+            </if>
+            <if test="projectEntity.isDel != null">
+                is_del = #{projectEntity.isDel},
+            </if>
+            <if test="projectEntity.createUser != null">
+                create_user = #{projectEntity.createUser},
+            </if>
+            <if test="projectEntity.createName != null and projectEntity.createName != ''">
+                create_name = #{projectEntity.createName},
+            </if>
+            <if test="projectEntity.createTime != null">
+                create_time = #{projectEntity.createTime},
+            </if>
+            <if test="projectEntity.updateUser != null">
+                update_user = #{projectEntity.updateUser},
+            </if>
+            <if test="projectEntity.updateTime != null">
+                update_time = #{projectEntity.updateTime},
+            </if>
+            <if test="projectEntity.projectStatus != null">
+                project_status = #{projectEntity.projectStatus}
+            </if>
+        </set>
+        where is_del=0
+        <if test="projectEntity.projectId != null and projectEntity.projectId != ''">
+            and project_id = #{projectEntity.projectId}
+        </if>
+    </update>
+    <delete id="delete" parameterType="com.remote.zkwladmin.modules.pro.entity.ProjectEntity">
+        delete from sys_user where is_del = 0
+        <if test="projectId != null and projectId != ''">
+            project_id = #{projectId}
+        </if>
+    </delete>
+</mapper>

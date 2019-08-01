@@ -1,5 +1,6 @@
 package com.remote.zkwladmin.modules.pro.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -10,10 +11,11 @@ import java.util.Date;
 @Data
 @TableName("fun_project")
 public class ProjectEntity implements Serializable{
+    private static final long serialVersionUID = 2L;
     /*
     * 项目id
     */
-    @TableId
+    @TableId(type = IdType.UUID)
     private String projectId;
     /*
     * 项目编号
@@ -30,11 +32,11 @@ public class ProjectEntity implements Serializable{
     /*
     * 所属城市
     */
-    private String cityId;
+    private Long cityId;
     /*
     * 管理者id
     */
-    private Long exclusive_user;
+    private Long exclusiveUser;
     /*
     * 运行状态
     */
@@ -42,7 +44,7 @@ public class ProjectEntity implements Serializable{
     /*
    * 总装机数量
    */
-    private Integer sunCount;
+    private Integer sumCount;
     /*
    * 网管数量
    */
