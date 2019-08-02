@@ -18,9 +18,10 @@ public interface ProjectService extends IService<ProjectEntity>{
     /**
      * 修改项目
      * */
-    boolean update(ProjectEntity projectEntity);
+    int update(ProjectEntity projectEntity);
     /**
      * 删除项目
      * */
-    boolean delete(String projectId);
+    int delete(String projectId);
+    ProjectEntity queryInfo(String projectId);
 }

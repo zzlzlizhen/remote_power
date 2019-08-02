@@ -3,7 +3,7 @@ $(function () {
         url: baseURL + 'pro/list',
         datatype: "json",
         colModel: [
-            { label: '项目id', name: 'projectId', width: 60, key: true },
+            { label: '项目id', name: 'projectId', index: "project_id", width: 45, key: true },
             { label: '项目编号', name: 'projectCode', width: 45},
             { label: '项目名称', name: 'projectName', width: 75 },
             { label: '用户', name: 'createName', width: 75 },
@@ -55,13 +55,13 @@ var vm = new Vue({
             projectName:null,
             projectDesc:null,
             cityId:null,
-            exclusiveUser:null,
+            exclusiveUser:0,
             runStatus:0,
             sumCount:0,
             gatewayCount:0,
             faultCount:0,
-            callPoliceCount:null,
-            projectStatus: null
+            callPoliceCount:0,
+            projectStatus: 0
         }
     },
     methods: {
@@ -78,27 +78,26 @@ var vm = new Vue({
             if(projectId == null){
                 return ;
             }
+            vm.project.projectId = projectId;
             vm.showList = false;
             vm.title = "修改";
-
-           /* vm.getInfo(projectId)*/
+            vm.getInfo(projectId);
         },
         saveOrUpdate: function (event) {
-            alert(111111);
             $('#btnSaveOrUpdate').button('loading').delay(1000).queue(function() {
                 var url = vm.project.projectId == null ? "pro/add" : "pro/update";
                 $.ajax({
                     type: "POST",
                     url: baseURL + url,
                     data:
+                    "&projectId=" + vm.project.projectId +
                     "&projectCode=" + vm.project.projectCode +
                     "&projectName=" + vm.project.projectName +
                     "&projectDesc=" + vm.project.projectDesc +
-                    "&exclusiveUser"+ vm.project.exclusiveUser,
+                    "&exclusiveUser="+ vm.project.exclusiveUser,
                     success: function(r){
                         if(r.code === 0){
                             layer.msg("操作成功", {icon: 1});
-                            vm.reload();
                             $('#btnSaveOrUpdate').button('reset');
                             $('#btnSaveOrUpdate').dequeue();
                         }else{
@@ -124,10 +123,10 @@ var vm = new Vue({
                     $.ajax({
                         type: "POST",
                         url: baseURL + "pro/delete",
-                        contentType: "application/json",
-                        data: JSON.stringify(projectId),
+                        data:
+                        "&projectId=" + projectId,
                         success: function(r){
-                            if(r.code == 0){
+                            if(r.code == 200){
                                 layer.msg("操作成功", {icon: 1});
                                 $("#jqGrid").trigger("reloadGrid");
                             }else{

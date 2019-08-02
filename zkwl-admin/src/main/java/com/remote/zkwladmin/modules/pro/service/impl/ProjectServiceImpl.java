@@ -32,7 +32,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, ProjectEntity> i
                 new QueryWrapper<ProjectEntity>()
                         .like(StringUtils.isNotBlank(projectCode),"project_code", projectCode)
                         .like(StringUtils.isNotBlank(projectName),"project_name", projectName)
-                        .like(StringUtils.isNotBlank(exclusiveUser),"exclusive_user", exclusiveUser)
+                        .like(StringUtils.isNotBlank(exclusiveUser),"exclusive_user", exclusiveUser).eq("is_del",0)
                         .apply(params.get(Constant.SQL_FILTER) != null, (String)params.get(Constant.SQL_FILTER))
         );
         return new PageUtils(page);
@@ -45,12 +45,17 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, ProjectEntity> i
     }
 
     @Override
-    public boolean update(ProjectEntity projectEntity) {
-        return this.update(projectEntity);
+    public int update(ProjectEntity projectEntity) {
+        return this.baseMapper.update(projectEntity,new QueryWrapper<ProjectEntity>().eq("is_del",0).eq("project_id",projectEntity.getProjectId()));
     }
 
     @Override
-    public boolean delete(String projectId) {
-        return this.delete(projectId);
+    public int delete(String projectId) {
+        return this.baseMapper.deleteById(projectId);
+    }
+
+    @Override
+    public ProjectEntity queryInfo(String projectId) {
+       return this.baseMapper.selectOne(new QueryWrapper<ProjectEntity>().eq("is_del",0).eq("project_id",projectId));
     }
 }
