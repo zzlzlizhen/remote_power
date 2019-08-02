@@ -3,14 +3,15 @@ $(function () {
         url: baseURL + 'pro/list',
         datatype: "json",
         colModel: [
-            { label: '项目id', name: 'projectId', index: "project_id", width: 45, key: true },
-            { label: '项目编号', name: 'projectCode', width: 45},
-            { label: '项目名称', name: 'projectName', width: 75 },
-            { label: '用户', name: 'createName', width: 75 },
-            { label: '总装机数量', name: 'sumCount', width: 90 },
-            { label: '网关数量', name: 'gatewayCount', width: 100 },
-            { label: '报警数量', name: 'callPoliceCount', width: 100 },
-            { label: '项目描述', name: 'projectDesc', width: 100 },
+            { label: '项目id', name: 'projectId', index: "project_id", width: '10%', key: true },
+            { label: '项目编号', name: 'projectCode', width: '10%'},
+            { label: '项目名称', name: 'projectName', width: '10%' },
+            { label: '用户', name: 'createName', width: '10%' },
+            { label: '总装机数量', name: 'sumCount', width: '10%' },
+            { label: '网关数量', name: 'gatewayCount', width: '10%' },
+            { label: '报警数量', name: 'callPoliceCount', width: '10%' },
+            { label: '项目描述', name: 'projectDesc', width: '10%' },
+            {label: '操作',name:"action", index:'action',width:'20%',align:'center',sortable:false}
         ],
         viewrecords: true,
         height: 385,
@@ -33,12 +34,23 @@ $(function () {
             order: "order"
         },
         gridComplete:function(){
+            var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+            for(var i=0;i < ids.length;i++){
+                var cl = ids[i];
+                acc1 = "<input style='height:22px;width:60px;' type='button' id='queryBtn"+ cl +"'  value='查询' @click=\"queryBtnClick("+cl+",this)\"  />"+
+                 "<input style='height:22px;width:60px;' type='button' id='mapBtn"+ cl +"'  value='地图' @click=\"mapBtnClick("+cl+",this)\"  />";
+                $("#jqGrid").jqGrid('setRowData',cl,{action:acc1});
+
+            }
             //隐藏grid底部滚动条
             $("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" });
         }
     });
 });
-
+//添加的 按钮的单击事件
+function btnClick(cl,obj){
+    var btnStr=$(obj).val();//传过来的button对象，调用的时候通过this关键词设置此参数
+}
 var vm = new Vue({
     el:'#rrapp',
     data:{
@@ -115,9 +127,7 @@ var vm = new Vue({
                 return ;
             }
             var lock = false;
-            layer.confirm('确定要删除选中的记录？', {
-                btn: ['确定','取消'] //按钮
-            }, function(){
+            confirm('确定要删除选中的记录？', function(){
                 if(!lock) {
                     lock = true;
                     $.ajax({
@@ -127,7 +137,9 @@ var vm = new Vue({
                         "&projectId=" + projectId,
                         success: function(r){
                             if(r.code == 200){
-                                layer.msg("操作成功", {icon: 1});
+                                alert('操作成功', function(){
+                                    vm.reload();
+                                });
                                 $("#jqGrid").trigger("reloadGrid");
                             }else{
                                 layer.alert(r.msg);
@@ -147,6 +159,7 @@ var vm = new Vue({
             vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam','page');
             $("#jqGrid").jqGrid('setGridParam',{
+                postData:{'projectCode':vm.q.projectCode,'projectName': vm.q.projectName,'exclusiveUser':vm.q.exclusiveUser},
                 page:page
             }).trigger("reloadGrid");
         }
