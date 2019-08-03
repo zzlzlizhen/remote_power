@@ -3,21 +3,35 @@ $(function () {
         url: baseURL + 'pro/list',
         datatype: "json",
         colModel: [
-            { label: '项目id', name: 'projectId', index: "project_id", width: '10%', key: true },
-            { label: '项目编号', name: 'projectCode', width: '10%'},
+            { label: '项目id', name: 'projectId', index: "project_id", width: '0',hidden:true, key: true },
+            { label: '项目编号', name: 'projectCode', width: '10%',  editable: true,  //允许编辑
+                editrules: {
+                    edithidden:true, //即使该列隐藏也可编辑
+                    required:true,   //该列值不得为空
+                    custom:true,     //自定义校验规则
+                    custom_func:function(value, colNames){ //自定义校验函数实现
+                        var regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im,
+                            regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
+                        if(regEn.test(value) || regCn.test(value)){
+                            return [false, "不能包含特殊字符"]; // 这里表示，当返回false时弹出的警告内容
+                        }else{
+                            return [true,""]; //返回true则不弹出任何内容
+                        }
+                    }
+                },sorttype: "string",align:"center"},
             { label: '项目名称', name: 'projectName', width: '10%' },
             { label: '用户', name: 'createName', width: '10%' },
             { label: '总装机数量', name: 'sumCount', width: '10%' },
             { label: '网关数量', name: 'gatewayCount', width: '10%' },
             { label: '报警数量', name: 'callPoliceCount', width: '10%' },
             { label: '项目描述', name: 'projectDesc', width: '10%' },
-            {label: '操作',name:"action", index:'action',width:'20%',align:'center',sortable:false}
+            {label: '操作',name:"action", width:'20%',align:'center',sortable:false,formatter:displayButtons}
         ],
-        viewrecords: true,
+        viewrecords: true,/*显示记录*/
         height: 385,
         rowNum: 10,
         rowList : [10,30,50],
-        rownumbers: true,
+        rownumbers: false,
         rownumWidth: 25,
         autowidth:true,
         multiselect: true,
@@ -34,24 +48,24 @@ $(function () {
             order: "order"
         },
         gridComplete:function(){
-            var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
-            for(var i=0;i < ids.length;i++){
-                var cl = ids[i];
-                acc1 = "<input style='height:22px;width:60px;' type='button' id='queryBtn"+ cl +"'  value='查询' @click=\"queryBtnClick("+cl+",this)\"  />"+
-                 "<input style='height:22px;width:60px;' type='button' id='mapBtn"+ cl +"'  value='地图' @click=\"mapBtnClick("+cl+",this)\"  />";
-                $("#jqGrid").jqGrid('setRowData',cl,{action:acc1});
-
-            }
             //隐藏grid底部滚动条
             $("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" });
         }
     });
 });
-//添加的 按钮的单击事件
-function btnClick(cl,obj){
-    var btnStr=$(obj).val();//传过来的button对象，调用的时候通过this关键词设置此参数
-}
-var vm = new Vue({
+    function displayButtons(cellvalue,options,rowObject) {
+        var queryBtn = "<input style='height:22px;width:60px;' type='button' id='queryBtn'  value='查询' onclick=\"queryClick()\"/>";
+        var mapBtn = "<input style='height:22px;width:60px;' type='button' id='mapBtn'  value='地图' onclick=\"mapClick()\"/>";
+        return queryBtn + mapBtn;
+    }
+
+    function queryClick() {
+        alert(1);
+    }
+    function mapClick() {
+        alert(2);
+    }
+    var vm = new Vue({
     el:'#rrapp',
     data:{
         q:{
