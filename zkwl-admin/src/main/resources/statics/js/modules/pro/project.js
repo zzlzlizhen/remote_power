@@ -48,22 +48,34 @@ $(function () {
             order: "order"
         },
         gridComplete:function(){
+       /*     var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+            for(var i=0;i < ids.length;i++){
+                var cl = ids[i];
+               /!* acc1 = "<input style='height:22px;width:60px;' type='button' id='queryBtn"+ cl +"'  value='查询' onclick=\"btnClick("+cl+",this)\"/>";*!/
+                acc1 = "<input style='height:22px;width:60px;' type='button' id=\"mapBtn\" class='mapBtn' @click=\"mapBtn\" value='地图'/>";
+                $("#jqGrid").jqGrid('setRowData',cl,{action:acc1});
+
+            }*/
             //隐藏grid底部滚动条
             $("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" });
         }
     });
 });
     function displayButtons(cellvalue,options,rowObject) {
-        var queryBtn = "<input style='height:22px;width:60px;' type='button' id='queryBtn'  value='查询' onclick=\"queryClick()\"/>";
-        var mapBtn = "<input style='height:22px;width:60px;' type='button' id='mapBtn'  value='地图' onclick=\"mapClick()\"/>";
+        var queryBtn = "<input style='margin-right: 8px;' class='btn btn-primary' type='button' value='查询' onclick=\"queryClick('"
+            + options.rowId + "');\" />";
+       var mapBtn = "<input class='btn btn-danger' type='button' value='地图' onclick=\"mapClick('"
+            + options.rowId + "');\" />";
+/*        var queryBtn = "<input style='height:22px;width:60px;' type='button' id='queryBtn'  value='查询' onclick=\"queryClick()\"/>";
+        var mapBtn = "<input style='height:22px;width:60px;' type='button' id='mapBtn'  value='地图' onclick=\"mapClick()\"/>";*/
         return queryBtn + mapBtn;
     }
 
-    function queryClick() {
-        alert(1);
+    function queryClick(rowId) {
+        alert(rowId);
     }
-    function mapClick() {
-        alert(2);
+    function mapClick(rowId) {
+        alert(rowId);
     }
     var vm = new Vue({
     el:'#rrapp',
