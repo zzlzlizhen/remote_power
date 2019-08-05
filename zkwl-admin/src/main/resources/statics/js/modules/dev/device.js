@@ -1,4 +1,6 @@
 $(function () {
+    var projectId = $('#projectId').val();
+    alert(projectId);
     $("#jqGrid").jqGrid({
         url: baseURL + 'dev/list',
         datatype: "json",

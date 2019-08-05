@@ -35,6 +35,13 @@
         <div id="jqGridPager"></div>
     </div>
 
+    <div>
+        <#if Request["projectId"]??>
+            <input type="hidden" value="${projectId}" id="projectId"/>
+        </#if>
+
+    </div>
+
     <div v-show="!showList" class="panel panel-default">
         <div class="panel-heading">{{title}}</div>
         <form class="form-horizontal">
