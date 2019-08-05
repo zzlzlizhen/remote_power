@@ -1,4 +1,5 @@
 $(function () {
+    var map = new AMap.Map('container');
     $("#jqGrid").jqGrid({
         url: baseURL + 'pro/list',
         datatype: "json",
@@ -72,15 +73,7 @@ $(function () {
     }
 
     function queryClick(rowId) {
-       /* var router = new Router();
-        router.add('#modules/dev/device.html', function() {
-            console.log("页面跳转4")
-            var url = window.location.hash;
-            alert(url);
-            vm.main = url.replace('#', '');
-        });
-        router.start();*/
-        window.location.href=baseURL+"/modules/dev/device.html?projectId="+rowId;
+        alert(rowId);
     }
     function mapClick(rowId) {
         alert(rowId);

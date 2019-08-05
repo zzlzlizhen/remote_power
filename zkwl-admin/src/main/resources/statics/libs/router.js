@@ -63,14 +63,17 @@
 		//var addr = hash.split('/')[0];
 		var addr = hash;
 		var cb = getCb(addr, self.hashList);
-		if(cb != false) {
+        var arr = hash.split('/');
+        arr.shift();
+        cb.apply(self, arr);
+	/*	if(cb != false) {
 			var arr = hash.split('/');
 			arr.shift();
 			cb.apply(self, arr);
 		}
 		else {
-			self.index && self.go(self.index);	
-		}
+			self.index && self.go(self.index);
+		}*/
 	};
 
 	/**
