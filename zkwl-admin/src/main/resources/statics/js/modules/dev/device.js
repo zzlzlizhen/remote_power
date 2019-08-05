@@ -1,26 +1,40 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: baseURL + 'sys/user/list',
+        url: baseURL + 'dev/list',
         datatype: "json",
-        colModel: [			
-			{ label: '用户ID', name: 'userId', index: "user_id", width: 45, key: true },
-			{ label: '用户名', name: 'username', width: 75 },
-            { label: '所属部门', name: 'deptName', sortable: false, width: 75 },
-			{ label: '邮箱', name: 'email', width: 90 },
-			{ label: '手机号', name: 'mobile', width: 100 },
-			{ label: '状态', name: 'status', width: 60, formatter: function(value, options, row){
-				return value === 0 ? 
-					'<span class="label label-danger">禁用</span>' : 
-					'<span class="label label-success">正常</span>';
-			}},
-			{ label: '创建时间', name: 'createTime', index: "create_time", width: 85}
+        colModel: [
+            { label: '设备id', name: 'deviceId', index: "device_id", width: '0',hidden:true, key: true },
+            { label: '设备编号', name: 'deviceCode', width: '10%',  editable: true,  //允许编辑
+                editrules: {
+                    edithidden:true, //即使该列隐藏也可编辑
+                    required:true,   //该列值不得为空
+                    custom:true,     //自定义校验规则
+                    custom_func:function(value, colNames){ //自定义校验函数实现
+                        var regEn = /[`~!@#$%^&*()_+<>?:"{},.\/;'[\]]/im,
+                            regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/im;
+                        if(regEn.test(value) || regCn.test(value)){
+                            return [false, "不能包含特殊字符"]; // 这里表示，当返回false时弹出的警告内容
+                        }else{
+                            return [true,""]; //返回true则不弹出任何内容
+                        }
+                    }
+                },sorttype: "string",align:"center"},
+            { label: '设备名称', name: 'deviceName', width: '10%' },
+            { label: '所属分组', name: 'groupId', width: '10%' },
+            { label: '光电池状态', name: 'photocellState', width: '10%' },
+            { label: '蓄电池状态', name: 'batteryState', width: '10%' },
+            { label: '负载状态', name: 'loadState', width: '10%' },
+            { label: '信号状态', name: 'signalState', width: '10%' },
+            { label: '亮度', name: 'light', width: '10%' },
+            { label: '无线模块', name: 'communicationType', width: '10%' },
+            {label: '操作',name:"action", width:'20%',align:'center',sortable:false,formatter:displayButtons}
         ],
-		viewrecords: true,
+        viewrecords: true,/*显示记录*/
         height: 385,
         rowNum: 10,
-		rowList : [10,30,50],
-        rownumbers: true, 
-        rownumWidth: 25, 
+        rowList : [10,30,50],
+        rownumbers: false,
+        rownumWidth: 25,
         autowidth:true,
         multiselect: true,
         pager: "#jqGridPager",
@@ -31,45 +45,88 @@ $(function () {
             records: "page.totalCount"
         },
         prmNames : {
-            page:"page", 
-            rows:"limit", 
+            page:"page",
+            rows:"limit",
             order: "order"
         },
         gridComplete:function(){
-        	//隐藏grid底部滚动条
-        	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
+            /*     var ids = jQuery("#jqGrid").jqGrid('getDataIDs');
+                 for(var i=0;i < ids.length;i++){
+                     var cl = ids[i];
+                    /!* acc1 = "<input style='height:22px;width:60px;' type='button' id='queryBtn"+ cl +"'  value='查询' onclick=\"btnClick("+cl+",this)\"/>";*!/
+                     acc1 = "<input style='height:22px;width:60px;' type='button' id=\"mapBtn\" class='mapBtn' @click=\"mapBtn\" value='地图'/>";
+                     $("#jqGrid").jqGrid('setRowData',cl,{action:acc1});
+
+                 }*/
+            //隐藏grid底部滚动条
+            $("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" });
         }
     });
 });
-var setting = {
-    data: {
-        simpleData: {
-            enable: true,
-            idKey: "deptId",
-            pIdKey: "parentId",
-            rootPId: -1
-        },
-        key: {
-            url:"nourl"
-        }
-    }
-};
-var ztree;
+function displayButtons(cellvalue,options,rowObject) {
+    var queryBtn = "<input style='margin-right: 8px;' class='btn btn-primary' type='button' value='查询' onclick=\"queryClick('"
+        + options.rowId + "');\" />";
+    var mapBtn = "<input class='btn btn-danger' type='button' value='地图' onclick=\"mapClick('"
+        + options.rowId + "');\" />";
+    /*        var queryBtn = "<input style='height:22px;width:60px;' type='button' id='queryBtn'  value='查询' onclick=\"queryClick()\"/>";
+            var mapBtn = "<input style='height:22px;width:60px;' type='button' id='mapBtn'  value='地图' onclick=\"mapClick()\"/>";*/
+    return queryBtn + mapBtn;
+}
 
+function queryClick(rowId) {
+    alert(rowId);
+}
+function mapClick(rowId) {
+    alert(rowId);
+}
 var vm = new Vue({
     el:'#rrapp',
     data:{
         q:{
-            username: null
+            deviceCode: null,
+            deviceName: null,
+            groupId: null
         },
         showList: true,
         title:null,
-        roleList:{},
-        user:{
-            status:1,
-            deptId:null,
-            deptName:null,
-            roleIdList:[]
+        device :{
+            deviceId:null,
+            deviceCode:null,
+            deviceName:null,
+            groupId:null,
+            projectId:null,
+            deviceType:0,
+            photocellState:0,
+            batteryState:0,
+            loadState:0,
+            signalState:0,
+            runStatus:0,
+            light:null,
+            communicationType:0,
+            onOff:0,
+            longitude:null,
+            latitude:null,
+            isDel:0,
+            createUser:0,
+            createName:null,
+            createTime:null,
+            updateUser:0,
+            updateTime:null,
+            batteryMrgin:null,
+            batteryVoltage:0.0,
+            photovoltaicCellVoltage:0.0,
+            chargingCurrent:0.0,
+            chargingPower:0.0,
+            loadVoltage:0.0,
+            loadPower:0.0,
+            loadCurrent: 0.0,
+            lightingDuration:0.0,
+            morningHours:0.0,
+            cityName:0.0,
+            dischargeCapacitySum:0.0,
+            chargingCapacitySum:0.0,
+            version:0,
+            deviceVersion:0
         }
     },
     methods: {
@@ -79,128 +136,83 @@ var vm = new Vue({
         add: function(){
             vm.showList = false;
             vm.title = "新增";
-            vm.roleList = {};
-            vm.user = {deptName:null, deptId:null, status:1, roleIdList:[]};
-
-            //获取角色信息
-            this.getRoleList();
-
-            vm.getDept();
+            vm.device = {};
         },
-        getDept: function(){
-            //加载部门树
-            $.get(baseURL + "sys/dept/list", function(r){
-                ztree = $.fn.zTree.init($("#deptTree"), setting, r);
-                var node = ztree.getNodeByParam("deptId", vm.user.deptId);
-                if(node != null){
-                    ztree.selectNode(node);
-
-                    vm.user.deptName = node.name;
-                }
-            })
-        },
-        update: function () {
-            var userId = getSelectedRow();
-            if(userId == null){
+        update: function (event) {
+            var deviceId = getSelectedRow();
+            if(deviceId == null){
                 return ;
             }
-
+            vm.device.deviceId = deviceId;
             vm.showList = false;
             vm.title = "修改";
-
-            vm.getUser(userId);
-            //获取角色信息
-            this.getRoleList();
+            vm.getInfo(deviceId);
         },
-        permissions: function () {
-            var userId = getSelectedRow();
-            if(userId == null){
-                return ;
-            }
-
-            window.location.href=baseURL+"sys/permissions/index/"+userId;
-        },
-        del: function () {
-            var userIds = getSelectedRows();
-            if(userIds == null){
-                return ;
-            }
-
-            confirm('确定要删除选中的记录？', function(){
+        saveOrUpdate: function (event) {
+            $('#btnSaveOrUpdate').button('loading').delay(1000).queue(function() {
+                var url = vm.device.deviceId == null ? "dev/add" : "dev/update";
                 $.ajax({
                     type: "POST",
-                    url: baseURL + "sys/user/delete",
-                    contentType: "application/json",
-                    data: JSON.stringify(userIds),
+                    url: baseURL + url,
+                    data:
+                    "&deviceId=" + vm.device.deviceId +
+                    "&deviceCode=" + vm.device.deviceCode +
+                    "&deviceName=" + vm.device.deviceName +
+                    "&groupId=" + vm.device.groupId +
+                    "&communicationType="+ vm.device.communicationType,
                     success: function(r){
-                        if(r.code == 0){
-                            alert('操作成功', function(){
-                                vm.reload();
-                            });
+                        if(r.code === 0){
+                            layer.msg("操作成功", {icon: 1});
+                            $('#btnSaveOrUpdate').button('reset');
+                            $('#btnSaveOrUpdate').dequeue();
                         }else{
-                            alert(r.msg);
+                            layer.alert(r.msg);
+                            $('#btnSaveOrUpdate').button('reset');
+                            $('#btnSaveOrUpdate').dequeue();
                         }
                     }
                 });
             });
         },
-        saveOrUpdate: function () {
-            var url = vm.user.userId == null ? "sys/user/save" : "sys/user/update";
-            $.ajax({
-                type: "POST",
-                url: baseURL + url,
-                contentType: "application/json",
-                data: JSON.stringify(vm.user),
-                success: function(r){
-                    if(r.code==200){
-                        alert('操作成功', function(){
-                            vm.reload();
-                        });
-                    }else{
-                        alert(r.msg);
-                    }
+        del: function (event) {
+            var deviceId = getSelectedRows();
+            if(deviceId == null){
+                return ;
+            }
+            var lock = false;
+            confirm('确定要删除选中的记录？', function(){
+                if(!lock) {
+                    lock = true;
+                    $.ajax({
+                        type: "POST",
+                        url: baseURL + "dev/delete",
+                        data:
+                        "&deviceId=" + deviceId,
+                        success: function(r){
+                            if(r.code == 200){
+                                alert('操作成功', function(){
+                                    vm.reload();
+                                });
+                                $("#jqGrid").trigger("reloadGrid");
+                            }else{
+                                layer.alert(r.msg);
+                            }
+                        }
+                    });
                 }
+            }, function(){
             });
         },
-        getUser: function(userId){
-            $.get(baseURL + "sys/user/info/"+userId, function(r){
-                vm.user = r.user;
-                vm.user.password = null;
-
-                vm.getDept();
+        getInfo: function(deviceId){
+            $.get(baseURL + "dev/info/"+deviceId, function(r){
+                vm.device = r.device;
             });
         },
-        getRoleList: function(){
-            $.get(baseURL + "sys/role/select", function(r){
-                vm.roleList = r.list;
-            });
-        },
-        deptTree: function(){
-            layer.open({
-                type: 1,
-                offset: '50px',
-                skin: 'layui-layer-molv',
-                title: "选择部门",
-                area: ['300px', '450px'],
-                shade: 0,
-                shadeClose: false,
-                content: jQuery("#deptLayer"),
-                btn: ['确定', '取消'],
-                btn1: function (index) {
-                    var node = ztree.getSelectedNodes();
-                    //选择上级部门
-                    vm.user.deptId = node[0].deptId;
-                    vm.user.deptName = node[0].name;
-
-                    layer.close(index);
-                }
-            });
-        },
-        reload: function () {
+        reload: function (event) {
             vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam','page');
             $("#jqGrid").jqGrid('setGridParam',{
-                postData:{'username': vm.q.username},
+                postData:{'deviceCode':vm.q.deviceCode,'deviceName': vm.q.deviceName,'groupId':vm.q.groupId},
                 page:page
             }).trigger("reloadGrid");
         }

@@ -2,4 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.remote.zkwladmin.modules.dev.dao.DeviceDao">
+    <sql id="cloums">
+       device_id as deviceId,
+       device_code as deviceCode,
+       device_name as deviceName,
+       group_id as groupId,
+       project_id as projectId,
+       device_type as deviceType,
+       photocell_state as photocellState,
+       battery_state as batteryState,
+       load_state as loadState,
+       signal_state as signalState,
+       run_state as runState,
+       light as light,
+       communication_type as communicationType,
+       on_off as onOff,
+       longitude as longitude,
+       latitude as latitude,
+       is_del as isDel,
+       create_user as createUser,
+       create_name as createName,
+       create_time as createTime,
+       update_user as updateUser,
+       update_time as updateTime,
+       battery_margin as batteryMargin,
+       battery_voltage as batteryVoltage,
+       photovoltaic_cell_voltage as photovoltaicCellVoltage,
+       charging_current as chargingCurrent,
+       charging_power as chargingPower,
+       load_voltage as loadVoltage,
+       load_power as loadPower,
+       load_current as loadCurrent,
+       lighting_duration as lightingDuration,
+       morning_hours as morningHours,
+       city_name as cityName,
+       discharge_capacity_sum as dischargeCapacitySum,
+       charging_capacity_sum as chargingCapacitySum,
+       version as version,
+       device_version as deviceVersion
+    </sql>
+    <select id="queryPageList" resultType="com.remote.zkwladmin.modules.dev.entity.DeviceEntity">
+        SELECT <include refid="cloums"/> from fun_device where is_del=0 LIMIT #{offset},#{limit}
+    </select>
 </mapper>
