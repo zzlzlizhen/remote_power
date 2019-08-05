@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.remote.zkwladmin.modules.gro.dao.GroupDao">
+    <sql id="cloums">
+       group_id as groupId,
+       project_id as projectId,
+       group_name as groupName,
+       device_ids as deviceIds,
+       create_user as createUser,
+       create_name as createName,
+       create_time as createTime,
+       update_user as updateUser,
+       update_time as updateTime,
+       is_del as isDel
+    </sql>
+    <select id="queryPageList" resultType="com.remote.zkwladmin.modules.gro.entity.GroupEntity">
+        SELECT <include refid="cloums"/> from fun_group where is_del=0 LIMIT #{offset},#{limit}
+    </select>
+</mapper>
