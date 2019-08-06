@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.remote.zkwladmin.modules.gro.entity.GroupEntity;
 import com.remote.zkwlcommon.utils.PageUtils;
 
+import java.util.List;
 import java.util.Map;
 
 public interface GroupService extends IService<GroupEntity>{
@@ -12,4 +13,5 @@ public interface GroupService extends IService<GroupEntity>{
     int update(GroupEntity groupEntity);
     int delete(String groupId);
     GroupEntity queryInfo(String groupId);
+    List<GroupEntity> queryByProjectId(String projectId);
 }

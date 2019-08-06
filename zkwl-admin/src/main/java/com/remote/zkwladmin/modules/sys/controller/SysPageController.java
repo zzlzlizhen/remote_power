@@ -30,7 +30,16 @@ public class SysPageController {
 	}
 
 	@RequestMapping(value = {"/", "index.html"})
-	public String index(){
+	public String index(HttpServletRequest request){
+		Map<String,String[]> map = request.getParameterMap();
+		if(map != null && map.size()>0){
+			for(String key:map.keySet()){
+				String value[] = map.get(key);
+				if(value != null){
+					request.setAttribute(key,value[0]);
+				}
+			}
+		}
 		return "index";
 	}
 

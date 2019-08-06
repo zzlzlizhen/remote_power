@@ -62,4 +62,11 @@ public class GroupServiceImpl extends ServiceImpl<GroupDao, GroupEntity> impleme
     public GroupEntity queryInfo(String groupId) {
         return this.baseMapper.selectOne(new QueryWrapper<GroupEntity>().eq("is_del",0).eq("group_id",groupId));
     }
+    /**
+     * 通过项目id获取分组
+     * */
+    @Override
+    public List<GroupEntity> queryByProjectId(String projectId) {
+        return this.baseMapper.selectList(new QueryWrapper<GroupEntity>().eq("is_del",0).eq("project_id",projectId));
+    }
 }

@@ -94,10 +94,14 @@ var vm = new Vue({
             });
         }
     },
+
     created: function () {
+
         this.getMenuList();
         this.getUser();
-    },updated:function(){
+    },
+
+    updated:function(){
 
         if($("#larry-side .layui-nav-item>a").length==0 || !isquery){
             return;

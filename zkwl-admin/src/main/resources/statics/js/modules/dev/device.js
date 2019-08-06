@@ -92,6 +92,27 @@ var vm = new Vue({
         },
         showList: true,
         title:null,
+        groups:[
+            {
+                groupId:null,
+                groupName:null
+            }
+        ],
+        types:[
+            //通讯类型 1：2G 2：Lora； 3：NBLot
+            {
+                type:1,
+                typeName: "2G",
+            },
+            {
+                type:2,
+                typeName: "Lora",
+            },
+            {
+                type:3,
+                typeName: "NBLot",
+            }
+        ],
         device :{
             deviceId:null,
             deviceCode:null,
@@ -133,6 +154,11 @@ var vm = new Vue({
         }
     },
     methods: {
+        created:function () {
+            //如果没有这句代码，select中初始化会是空白的，默认选中就无s法实现
+            this.selectedGroup = this.groups[0].groupId;
+            this.selectedType = this.types[0].type;
+        },
         query: function () {
             vm.reload();
         },
@@ -219,6 +245,7 @@ var vm = new Vue({
             });
         },
         reload: function (event) {
+            vm.q.projectId = $('projectId').val();
             vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam','page');
             $("#jqGrid").jqGrid('setGridParam',{

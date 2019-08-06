@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class GroupController extends AbstractController{
     GroupService groupService;
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @RequiresPermissions("gro:list")
-    public R queryPageList(Map<String,Object> params){
+    public R queryPageList(@RequestParam Map<String,Object> params){
         PageUtils page = groupService.queryPage(params);
         return R.ok().put("page",page);
     }
@@ -70,5 +71,12 @@ public class GroupController extends AbstractController{
     public R info(@PathVariable("groupId") String groupId){
         GroupEntity groupEntity = groupService.queryInfo(groupId);
         return R.ok().put("group",groupEntity);
+    }
+
+    @RequestMapping(value = "/groupList",method = RequestMethod.GET)
+    @RequiresPermissions("dev:add,dev:update")
+    public R queryGroupList(@PathVariable("projectId")String projectId){
+        List<GroupEntity> groupEntityList = groupService.queryByProjectId(projectId);
+        return R.ok().put("groupList",groupEntityList);
     }
 }
