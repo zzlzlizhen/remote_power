@@ -21,6 +21,10 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceDao, DeviceEntity> impl
     DeviceDao deviceDao;
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String projectId = (String) params.get("projectId");
+        String deviceCode = (String) params.get("deviceCode");
+        String deviceName = (String) params.get("deviceName");
+        String groupId = (String) params.get("groupId");
         int page =1;
         if(params.get(Constant.PAGE)!=null){
             page = Integer.parseInt((String)params.get(Constant.PAGE));
@@ -32,6 +36,15 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceDao, DeviceEntity> impl
         int offset = (page-1)*limit;
         params.put("offset",offset);
         params.put("limit",limit);
+        params.put("deviceCode",deviceCode);
+        params.put("deviceName",deviceName);
+        params.put("groupId",groupId);
+        if(StringUtils.isNotBlank(projectId)){
+            params.put("projectId",projectId);
+        }else{
+            params.put("projectId","0");
+        }
+
         List<DeviceEntity > list = this.deviceDao.queryPageList(params);
         Integer totalCount = 0;
         if(CollectionUtils.isNotEmpty(list) || list.size()>0){

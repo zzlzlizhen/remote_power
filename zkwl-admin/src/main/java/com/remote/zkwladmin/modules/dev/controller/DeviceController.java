@@ -16,13 +16,13 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController(value = "deviceController")
-@RequestMapping(value = "/dev")
+@RequestMapping(value = "dev")
 public class DeviceController extends AbstractController{
     @Autowired
     DeviceService deviceService;
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @RequiresPermissions("dev:list")
-    public R queryPageList(Map<String,Object> params){
+    public R queryPageList(@RequestParam Map<String,Object> params){
         PageUtils page = deviceService.queryPage(params);
         return R.ok().put("page",page);
     }

@@ -42,6 +42,20 @@
        device_version as deviceVersion
     </sql>
     <select id="queryPageList" resultType="com.remote.zkwladmin.modules.dev.entity.DeviceEntity">
-        SELECT <include refid="cloums"/> from fun_device where is_del=0 LIMIT #{offset},#{limit}
+        SELECT <include refid="cloums"/> from fun_device where is_del=0
+
+       <if test="projectId != null and projectId != ''">
+          and project_id = #{projectId}
+       </if>
+       <if test="deviceCode != null and deviceCode != ''">
+          and device_code = #{deviceCode}
+       </if>
+       <if test="deviceName != null and deviceName != ''">
+          and device_name = #{deviceName}
+       </if>
+       <if test="groupId != null and groupId != ''">
+          and group_id = #{groupId}
+       </if>
+       LIMIT #{offset},#{limit}
     </select>
 </mapper>

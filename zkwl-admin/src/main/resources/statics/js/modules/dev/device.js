@@ -1,9 +1,9 @@
 $(function () {
     var projectId = $('#projectId').val();
-    alert(projectId);
     $("#jqGrid").jqGrid({
         url: baseURL + 'dev/list',
         datatype: "json",
+        postData:{'projectId':projectId},
         colModel: [
             { label: '设备id', name: 'deviceId', index: "device_id", width: '0',hidden:true, key: true },
             { label: '设备编号', name: 'deviceCode', width: '10%',  editable: true,  //允许编辑
@@ -85,6 +85,7 @@ var vm = new Vue({
     el:'#rrapp',
     data:{
         q:{
+            projectId:null,
             deviceCode: null,
             deviceName: null,
             groupId: null
@@ -139,6 +140,11 @@ var vm = new Vue({
             vm.showList = false;
             vm.title = "新增";
             vm.device = {};
+            vm.device.projectId = $('#projectId').val();
+
+          /*  console.log(vm.device.projectId);*/
+           /* alert(projectId);*/
+
         },
         update: function (event) {
             var deviceId = getSelectedRow();
@@ -152,12 +158,14 @@ var vm = new Vue({
         },
         saveOrUpdate: function (event) {
             $('#btnSaveOrUpdate').button('loading').delay(1000).queue(function() {
+
                 var url = vm.device.deviceId == null ? "dev/add" : "dev/update";
                 $.ajax({
                     type: "POST",
                     url: baseURL + url,
                     data:
                     "&deviceId=" + vm.device.deviceId +
+                    "&projectId=" + vm.device.projectId +
                     "&deviceCode=" + vm.device.deviceCode +
                     "&deviceName=" + vm.device.deviceName +
                     "&groupId=" + vm.device.groupId +
@@ -214,7 +222,7 @@ var vm = new Vue({
             vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam','page');
             $("#jqGrid").jqGrid('setGridParam',{
-                postData:{'deviceCode':vm.q.deviceCode,'deviceName': vm.q.deviceName,'groupId':vm.q.groupId},
+                postData:{'projectId':vm.q.projectId,'deviceCode':vm.q.deviceCode,'deviceName': vm.q.deviceName,'groupId':vm.q.groupId},
                 page:page
             }).trigger("reloadGrid");
         }
