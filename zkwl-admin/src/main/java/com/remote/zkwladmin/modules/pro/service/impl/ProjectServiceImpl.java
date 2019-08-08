@@ -3,6 +3,7 @@ package com.remote.zkwladmin.modules.pro.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
 import com.remote.zkwladmin.common.annotation.DataFilter;
 import com.remote.zkwladmin.common.utils.Constant;
 import com.remote.zkwladmin.common.utils.Query;
@@ -11,7 +12,6 @@ import com.remote.zkwladmin.modules.pro.entity.ProjectEntity;
 import com.remote.zkwladmin.modules.pro.service.ProjectService;
 import com.remote.zkwlcommon.utils.PageUtils;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -20,11 +20,9 @@ import java.util.Map;
  * 项目
  */
 @Service("projectService")
-public class ProjectServiceImpl extends ServiceImpl<ProjectDao, ProjectEntity> implements ProjectService{
-    @Autowired
-    private ProjectDao projectDao;
+public class ProjectServiceImpl extends ServiceImpl<ProjectDao, ProjectEntity> implements ProjectService {
     @Override
-    @DataFilter(subDept = false, user = true)
+    @DataFilter(subDept = true, user = true)
     public PageUtils queryPage(Map<String, Object> params) {
         String projectCode = (String)params.get("projectCode");
         String projectName = (String)params.get("projectName");
@@ -47,8 +45,11 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, ProjectEntity> i
     }
 
     @Override
-    public int update(ProjectEntity projectEntity) {
-        return this.baseMapper.update(projectEntity,new QueryWrapper<ProjectEntity>().eq("is_del",0).eq("project_id",projectEntity.getProjectId()));
+    public int update(ProjectEntity project) {
+
+     /*  return this.baseMapper.update(projectEntity,new QueryWrapper<ProjectEntity>().eq("is_del",0));*/
+       return this.baseMapper.update(project,
+                new QueryWrapper<ProjectEntity>().eq("is_del", 0).eq("project_id",project.getProjectId()));
     }
 
     @Override

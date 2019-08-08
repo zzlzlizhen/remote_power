@@ -167,6 +167,21 @@ var vm = new Vue({
             vm.device.groupId = $("#groupId").val();
 
         },
+        getGroups: function () {
+            var url = "";
+            $.ajax({
+               type:"GET",
+               url:baseURL+url,
+               data:"" ,
+                sucess:function (r) {
+                    if(r.code==200){
+
+                    }else{
+                        layer.alert(r.msg);
+                    }
+                }
+            });
+        },
         groupType: function () {
             vm.device.communicationType = $("#groupType").val();
         },
@@ -208,7 +223,7 @@ var vm = new Vue({
                     "&groupId=" + vm.device.groupId +
                     "&communicationType="+ vm.device.communicationType,
                     success: function(r){
-                        if(r.code === 0){
+                        if(r.code === 200){
                             layer.msg("操作成功", {icon: 1});
                             $('#btnSaveOrUpdate').button('reset');
                             $('#btnSaveOrUpdate').dequeue();

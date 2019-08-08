@@ -130,8 +130,8 @@ $(function () {
             vm.getInfo(projectId);
         },
         saveOrUpdate: function (event) {
-            $('#btnSaveOrUpdate').button('loading').delay(1000).queue(function() {
-                var url = vm.project.projectId == null ? "pro/add" : "pro/update";
+            $('#proBtnSaveOrUpdate').button('loading').delay(1000).queue(function() {
+                var url = vm.project.projectId == null ? "/pro/add" : "/pro/update";
                 $.ajax({
                     type: "POST",
                     url: baseURL + url,
@@ -139,17 +139,17 @@ $(function () {
                     "&projectId=" + vm.project.projectId +
                     "&projectCode=" + vm.project.projectCode +
                     "&projectName=" + vm.project.projectName +
-                    "&projectDesc=" + vm.project.projectDesc +
-                    "&exclusiveUser="+ vm.project.exclusiveUser,
+                    "&exclusiveUser=" + vm.project.exclusiveUser +
+                    "&projectDesc="+ vm.project.projectDesc,
                     success: function(r){
-                        if(r.code === 0){
+                        if(r.code === 200){
                             layer.msg("操作成功", {icon: 1});
-                            $('#btnSaveOrUpdate').button('reset');
-                            $('#btnSaveOrUpdate').dequeue();
+                            $('#proBtnSaveOrUpdate').button('reset');
+                            $('#proBtnSaveOrUpdate').dequeue();
                         }else{
                             layer.alert(r.msg);
-                            $('#btnSaveOrUpdate').button('reset');
-                            $('#btnSaveOrUpdate').dequeue();
+                            $('#proBtnSaveOrUpdate').button('reset');
+                            $('#proBtnSaveOrUpdate').dequeue();
                         }
                     }
                 });

@@ -23,7 +23,7 @@
         dept_id as deptId,
         project_status as projectStatus
     </sql>
-    <sql id="key">
+<!--    <sql id="key">
         <trim suffixOverrides=",">
             <if test="projectEntity.projectId != null and projectEntity.projectId != ''">
                 project_id,
@@ -208,5 +208,5 @@
         <if test="projectId != null and projectId != ''">
             project_id = #{projectId}
         </if>
-    </delete>
+    </delete>-->
 </mapper>

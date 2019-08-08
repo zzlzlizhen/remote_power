@@ -46,14 +46,20 @@ public class ProjectController extends AbstractController{
     //修改项目
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     @RequiresPermissions("pro:update")
-    public R update(ProjectEntity projectEntity){
+    public R updateProject(ProjectEntity projectEntity){
+        if(StringUtils.isBlank(projectEntity.getProjectId())|| "".equals(projectEntity.getProjectId())){
+            return R.error("项目id不能为空");
+        }
         projectEntity.setUpdateTime(new Date());
+        projectEntity.setIsDel(0);
         projectEntity.setUpdateUser(getUserId());
-        int falg = projectService.update(projectEntity);
+        projectEntity.setUpdateTime(new Date());
+        int falg = this.projectService.update(projectEntity);
         if(falg <= 0){
             return R.error("修改项目失败");
         }
         return R.ok();
+
     }
     //删除改项目
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
