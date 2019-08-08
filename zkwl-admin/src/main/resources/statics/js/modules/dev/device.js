@@ -92,6 +92,7 @@ var vm = new Vue({
         },
         showList: true,
         title:null,
+        groupList:{},
         groups:[
             {
                 groupId:"0",
@@ -164,21 +165,15 @@ var vm = new Vue({
             vm.reload();
         },
         haveGroup: function () {
-            vm.device.groupId = $("#groupId").val();
-
+            vm.groups.groupId = $("#groupId").val();
         },
-        getGroups: function () {
-            var url = "";
-            $.ajax({
-               type:"GET",
-               url:baseURL+url,
-               data:"" ,
-                sucess:function (r) {
-                    if(r.code==200){
-
-                    }else{
-                        layer.alert(r.msg);
-                    }
+        getGroups: function (projectId) {
+            $.get(baseURL + "/gro/groupList/"+projectId, function(r){
+                vm.groups = r.groupList;
+                console.log(JSON.stringify(vm.groups));
+                for(i=0; i < vm.groups;i++){
+                    vm.groups.groupId = vm.groupList[i].groupId;
+                    vm.groups.groupName = vm.groupList[i].groupName;
                 }
             });
         },
@@ -191,9 +186,8 @@ var vm = new Vue({
             vm.device = {};
             vm.device.projectId = $('#projectId').val();
             vm.device.groupId = $("#groupId").val();
-
             vm.device.communicationType = $("#groupType").val();
-
+            vm.getGroups( vm.device.projectId);
           /*  console.log(vm.device.projectId);*/
            /* alert(projectId);*/
 
@@ -203,10 +197,12 @@ var vm = new Vue({
             if(deviceId == null){
                 return ;
             }
+            vm.device.projectId = $('#projectId').val();
             vm.device.deviceId = deviceId;
             vm.showList = false;
             vm.title = "修改";
             vm.getInfo(deviceId);
+            vm.getGroups( vm.device.projectId);
         },
         saveOrUpdate: function (event) {
             $('#btnSaveOrUpdate').button('loading').delay(1000).queue(function() {
@@ -220,7 +216,7 @@ var vm = new Vue({
                     "&projectId=" + vm.device.projectId +
                     "&deviceCode=" + vm.device.deviceCode +
                     "&deviceName=" + vm.device.deviceName +
-                    "&groupId=" + vm.device.groupId +
+                    "&groupId=" + vm.groups.groupId +
                     "&communicationType="+ vm.device.communicationType,
                     success: function(r){
                         if(r.code === 200){

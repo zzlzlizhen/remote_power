@@ -54,7 +54,7 @@ public class GroupController extends AbstractController{
         return R.ok();
     }
     //删除分组
-    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    @RequestMapping(value = "delete",method = RequestMethod.POST)
     @RequiresPermissions("gro:delete")
     public R delete(@RequestParam("groupId") String groupId){
         GroupEntity groupEntity = new GroupEntity();
@@ -66,15 +66,15 @@ public class GroupController extends AbstractController{
         }
         return R.ok();
     }
-    @RequestMapping(value = "/info/{groupId}",method = RequestMethod.GET)
+    @RequestMapping(value = "info/{groupId}",method = RequestMethod.GET)
     @RequiresPermissions("gro:info")
     public R info(@PathVariable("groupId") String groupId){
         GroupEntity groupEntity = groupService.queryInfo(groupId);
         return R.ok().put("group",groupEntity);
     }
 
-    @RequestMapping(value = "/groupList",method = RequestMethod.GET)
-    @RequiresPermissions("dev:add,dev:update")
+    @RequestMapping(value = "/groupList/{projectId}",method = RequestMethod.GET)
+    /*@RequiresPermissions("dev:add,dev:update")*/
     public R queryGroupList(@PathVariable("projectId")String projectId){
         List<GroupEntity> groupEntityList = groupService.queryByProjectId(projectId);
         return R.ok().put("groupList",groupEntityList);
