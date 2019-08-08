@@ -35,7 +35,7 @@ public class ProjectController extends AbstractController{
         if(StringUtils.isBlank(projectEntity.getProjectId()) || projectEntity.getProjectId().equals("")||projectEntity.getProjectId().equals("undefined")){
             projectEntity.setProjectId(UUID.randomUUID().toString().replace("-", ""));
         }
-        projectEntity.setCreateUser(getUserId());
+        projectEntity.setUserId(getUserId());
         projectEntity.setCreateTime(new Date());
         int falg = projectService.add(projectEntity);
         if(falg <= 0){

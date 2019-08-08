@@ -15,11 +15,12 @@
         fault_count as faultCount,
         call_police_count as callPoliceCount,
         is_del as isDel,
-        create_user as createUser,
+        user_id as userId,
         create_name as createName,
         create_time as createTime,
         update_user as updateUser,
         update_time as updateTime,
+        dept_id as deptId,
         project_status as projectStatus
     </sql>
     <sql id="key">
@@ -61,7 +62,7 @@
                 is_del,
             </if>
             <if test="projectEntity.createUser != null">
-                create_user,
+                user_id,
             </if>
             <if test="projectEntity.createName != null and projectEntity.createName != ''">
                 create_name,
@@ -119,7 +120,7 @@
                 #{projectEntity.isDel},
             </if>
             <if test="projectEntity.createUser != null">
-                #{projectEntity.createUser},
+                #{projectEntity.userId},
             </if>
             <if test="projectEntity.createName != null and projectEntity.createName != ''">
                 #{projectEntity.createName},
@@ -178,8 +179,8 @@
             <if test="projectEntity.isDel != null">
                 is_del = #{projectEntity.isDel},
             </if>
-            <if test="projectEntity.createUser != null">
-                create_user = #{projectEntity.createUser},
+            <if test="projectEntity.userId != null">
+                user_id = #{projectEntity.userId},
             </if>
             <if test="projectEntity.createName != null and projectEntity.createName != ''">
                 create_name = #{projectEntity.createName},

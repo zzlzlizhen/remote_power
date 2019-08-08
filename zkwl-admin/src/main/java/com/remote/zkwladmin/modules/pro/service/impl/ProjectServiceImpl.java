@@ -3,6 +3,7 @@ package com.remote.zkwladmin.modules.pro.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.remote.zkwladmin.common.annotation.DataFilter;
 import com.remote.zkwladmin.common.utils.Constant;
 import com.remote.zkwladmin.common.utils.Query;
 import com.remote.zkwladmin.modules.pro.dao.ProjectDao;
@@ -23,6 +24,7 @@ public class ProjectServiceImpl extends ServiceImpl<ProjectDao, ProjectEntity> i
     @Autowired
     private ProjectDao projectDao;
     @Override
+    @DataFilter(subDept = false, user = true)
     public PageUtils queryPage(Map<String, Object> params) {
         String projectCode = (String)params.get("projectCode");
         String projectName = (String)params.get("projectName");

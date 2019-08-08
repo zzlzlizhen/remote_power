@@ -64,7 +64,7 @@ public class ProjectEntity implements Serializable{
     /*
    * 创建人id
    */
-    private Long createUser;
+    private Long userId;
     /*
    *创建人姓名
    */
@@ -85,4 +85,5 @@ public class ProjectEntity implements Serializable{
    * 项目状态 1 启动 2停用
    */
     private Integer projectStatus;
+    private Long deptId;
 }

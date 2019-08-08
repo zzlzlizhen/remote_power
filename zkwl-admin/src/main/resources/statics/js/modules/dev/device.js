@@ -94,8 +94,8 @@ var vm = new Vue({
         title:null,
         groups:[
             {
-                groupId:null,
-                groupName:null
+                groupId:"0",
+                groupName:"默认分组"
             }
         ],
         types:[
@@ -156,17 +156,28 @@ var vm = new Vue({
     methods: {
         created:function () {
             //如果没有这句代码，select中初始化会是空白的，默认选中就无s法实现
-            this.selectedGroup = this.groups[0].groupId;
-            this.selectedType = this.types[0].type;
+     /*       this.selectedGroup = this.groups[0].groupId;
+            this.selectedType = this.types[0].type;*/
+
         },
         query: function () {
             vm.reload();
+        },
+        haveGroup: function () {
+            vm.device.groupId = $("#groupId").val();
+
+        },
+        groupType: function () {
+            vm.device.communicationType = $("#groupType").val();
         },
         add: function(){
             vm.showList = false;
             vm.title = "新增";
             vm.device = {};
             vm.device.projectId = $('#projectId').val();
+            vm.device.groupId = $("#groupId").val();
+
+            vm.device.communicationType = $("#groupType").val();
 
           /*  console.log(vm.device.projectId);*/
            /* alert(projectId);*/
