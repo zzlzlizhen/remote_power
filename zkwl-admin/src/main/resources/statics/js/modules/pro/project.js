@@ -101,7 +101,7 @@ $(function () {
             projectName:null,
             projectDesc:null,
             cityId:null,
-            exclusiveUser:0,
+            exclusiveUser:null,
             runStatus:0,
             sumCount:0,
             gatewayCount:0,

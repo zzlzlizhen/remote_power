@@ -36,6 +36,7 @@ public class ProjectController extends AbstractController{
             projectEntity.setProjectId(UUID.randomUUID().toString().replace("-", ""));
         }
         projectEntity.setUserId(getUserId());
+        projectEntity.setCreateName(getUser().getUsername());
         projectEntity.setCreateTime(new Date());
         int falg = projectService.add(projectEntity);
         if(falg <= 0){
@@ -52,6 +53,7 @@ public class ProjectController extends AbstractController{
         }
         projectEntity.setUpdateTime(new Date());
         projectEntity.setIsDel(0);
+        projectEntity.setCreateName(getUser().getUsername());
         projectEntity.setUpdateUser(getUserId());
         projectEntity.setUpdateTime(new Date());
         int falg = this.projectService.update(projectEntity);
