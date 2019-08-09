@@ -30,7 +30,7 @@ public class GroupController extends AbstractController{
     @RequiresPermissions("gro:save")
     public R save(GroupEntity groupEntity){
         groupEntity.setGroupId(UUID.randomUUID().toString().replace("-", ""));
-        groupEntity.setCreateUser(getUserId());
+        groupEntity.setUserId(getUserId());
         groupEntity.setCreateName(getUser().getUsername());
         groupEntity.setCreateTime(new Date());
         int n = this.groupService.add(groupEntity);

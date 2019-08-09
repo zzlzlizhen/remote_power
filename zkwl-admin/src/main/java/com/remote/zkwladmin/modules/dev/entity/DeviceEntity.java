@@ -61,7 +61,7 @@ public class DeviceEntity {
      * 是否删除  1 已删除 0未删除
      * */
     private Integer isDel;
-    private Long createUser;
+    private Long userId;
     private String createName;
     private Date createTime;
     private Long updateUser;
@@ -120,4 +120,5 @@ public class DeviceEntity {
     private Double chargingCapacitySum;
     private Integer version;
     private Long deviceVersion;
+    private Long deptId;
 }

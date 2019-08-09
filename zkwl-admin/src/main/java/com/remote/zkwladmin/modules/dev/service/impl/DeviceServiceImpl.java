@@ -2,6 +2,7 @@ package com.remote.zkwladmin.modules.dev.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.remote.zkwladmin.common.annotation.DataFilter;
 import com.remote.zkwladmin.common.utils.Constant;
 import com.remote.zkwladmin.modules.dev.dao.DeviceDao;
 import com.remote.zkwladmin.modules.dev.entity.DeviceEntity;
@@ -20,6 +21,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceDao, DeviceEntity> impl
     @Autowired
     DeviceDao deviceDao;
     @Override
+    @DataFilter(subDept = false, user = true)
     public PageUtils queryPage(Map<String, Object> params) {
         String projectId = (String) params.get("projectId");
         String deviceCode = (String) params.get("deviceCode");

@@ -2,6 +2,7 @@ package com.remote.zkwladmin.modules.gro.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.remote.zkwladmin.common.annotation.DataFilter;
 import com.remote.zkwladmin.common.utils.Constant;
 import com.remote.zkwladmin.modules.gro.dao.GroupDao;
 import com.remote.zkwladmin.modules.gro.entity.GroupEntity;
@@ -20,8 +21,12 @@ public class GroupServiceImpl extends ServiceImpl<GroupDao, GroupEntity> impleme
     @Autowired
     GroupDao groupDao;
     @Override
+    @DataFilter(subDept = false, user = true)
     public PageUtils queryPage(Map<String, Object> params) {
         int page =1;
+
+
+
         if(params.get(Constant.PAGE)!=null){
             page = Integer.parseInt((String)params.get(Constant.PAGE));
         }

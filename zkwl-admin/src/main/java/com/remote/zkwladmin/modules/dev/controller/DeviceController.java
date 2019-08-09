@@ -30,7 +30,7 @@ public class DeviceController extends AbstractController{
     @RequiresPermissions("dev:save")
     public R save(DeviceEntity deviceEntity){
         deviceEntity.setDeviceId(UUID.randomUUID().toString().replace("-", ""));
-        deviceEntity.setCreateUser(getUserId());
+        deviceEntity.setUserId(getUserId());
         deviceEntity.setCreateName(getUser().getUsername());
         deviceEntity.setCreateTime(new Date());
         int n = this.deviceService.add(deviceEntity);

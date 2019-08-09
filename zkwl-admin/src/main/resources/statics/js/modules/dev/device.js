@@ -189,7 +189,7 @@ var vm = new Vue({
             vm.title = "新增";
             vm.device = {};
             vm.device.projectId = $('#projectId').val();
-            vm.device.groupId = $("#groupId").val();
+
             vm.device.communicationType = $("#groupType").val();
             vm.getGroups( vm.device.projectId);
           /*  console.log(vm.device.projectId);*/
@@ -209,6 +209,7 @@ var vm = new Vue({
             vm.getGroups( vm.device.projectId);
         },
         saveOrUpdate: function (event) {
+            var groupId = $("#groupId").val();
             $('#btnSaveOrUpdate').button('loading').delay(1000).queue(function() {
 
                 var url = vm.device.deviceId == null ? "dev/add" : "dev/update";
@@ -220,7 +221,7 @@ var vm = new Vue({
                     "&projectId=" + vm.device.projectId +
                     "&deviceCode=" + vm.device.deviceCode +
                     "&deviceName=" + vm.device.deviceName +
-                    "&groupId=" + vm.groups.groupId +
+                    "&groupId=" + groupId +
                     "&communicationType="+ vm.device.communicationType,
                     success: function(r){
                         if(r.code === 200){

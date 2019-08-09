@@ -22,7 +22,7 @@ import java.util.Map;
 @Service("projectService")
 public class ProjectServiceImpl extends ServiceImpl<ProjectDao, ProjectEntity> implements ProjectService {
     @Override
-    @DataFilter(subDept = true, user = true)
+    @DataFilter(subDept = false, user = true)
     public PageUtils queryPage(Map<String, Object> params) {
         String projectCode = (String)params.get("projectCode");
         String projectName = (String)params.get("projectName");

@@ -1,4 +1,5 @@
 $(function () {
+    var projectId = $('#projectId').val();
     $("#jqGrid").jqGrid({
         url: baseURL + 'gro/list',
         datatype: "json",
@@ -8,6 +9,7 @@ $(function () {
             { label: '更新时间', name: 'updateTime', width: '10%' },
             {label: '操作',name:"action", width:'20%',align:'center',sortable:false,formatter:displayButtons}
         ],
+        postData:{'projectId':projectId},
         viewrecords: true,/*显示记录*/
         height: 385,
         rowNum: 10,
@@ -86,6 +88,7 @@ var vm = new Vue({
         add: function(){
             vm.showList = false;
             vm.title = "新增";
+
             vm.group= {};
         },
         update: function (event) {
@@ -99,6 +102,8 @@ var vm = new Vue({
             vm.getInfo(groupId);
         },
         saveOrUpdate: function (event) {
+            var projectId = $('#projectId').val();
+            alert(projectId);
             $('#btnSaveOrUpdate').button('loading').delay(1000).queue(function() {
                 var url = vm.group.groupId == null ? "gro/add" : "gro/update";
                 $.ajax({
@@ -106,6 +111,7 @@ var vm = new Vue({
                     url: baseURL + url,
                     data:
                     "&groupId=" + vm.group.groupId +
+                    "&projectId=" + projectId +
                     "&groupName="+ vm.group.groupName,
                     success: function(r){
                         if(r.code === 0){
@@ -159,7 +165,7 @@ var vm = new Vue({
             vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam','page');
             $("#jqGrid").jqGrid('setGridParam',{
-                postData:{'groupId':vm.q.groupId},
+                postData:{'groupName':vm.q.groupName},
                 page:page
             }).trigger("reloadGrid");
         }

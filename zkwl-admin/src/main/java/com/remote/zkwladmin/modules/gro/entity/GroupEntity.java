@@ -15,10 +15,11 @@ public class GroupEntity {
     private String projectId;
     private String groupName;
     private String deviceIds;
-    private Long createUser;
+    private Long userId;
     private String createName;
     private Date createTime;
     private Long updateUser;
     private Date updateTime;
     private Integer isDel;
+    private Long deptId;
 }

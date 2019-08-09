@@ -7,7 +7,8 @@
        project_id as projectId,
        group_name as groupName,
        device_ids as deviceIds,
-       create_user as createUser,
+       user_id as userId,
+       dept_id as deptId,
        create_name as createName,
        create_time as createTime,
        update_user as updateUser,
@@ -15,6 +16,13 @@
        is_del as isDel
     </sql>
     <select id="queryPageList" resultType="com.remote.zkwladmin.modules.gro.entity.GroupEntity">
-        SELECT <include refid="cloums"/> from fun_group where is_del=0 LIMIT #{offset},#{limit}
+        SELECT <include refid="cloums"/> from fun_group where is_del=0
+        <if test="projectId != null and projectId != ''">
+            and project_id = #{projectId}
+        </if>
+        <if test="groupName != null and groupName != ''">
+            and group_name = #{groupName}
+        </if>
+        LIMIT #{offset},#{limit}
     </select>
 </mapper>
