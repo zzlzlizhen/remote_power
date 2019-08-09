@@ -103,7 +103,6 @@ var vm = new Vue({
         },
         saveOrUpdate: function (event) {
             var projectId = $('#projectId').val();
-            alert(projectId);
             $('#btnSaveOrUpdate').button('loading').delay(1000).queue(function() {
                 var url = vm.group.groupId == null ? "gro/add" : "gro/update";
                 $.ajax({

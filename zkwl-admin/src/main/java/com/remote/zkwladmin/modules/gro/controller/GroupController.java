@@ -21,13 +21,13 @@ public class GroupController extends AbstractController{
     @Autowired
     GroupService groupService;
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    @RequiresPermissions("gro:list")
+    @RequiresPermissions("pro:list")
     public R queryPageList(@RequestParam Map<String,Object> params){
         PageUtils page = groupService.queryPage(params);
         return R.ok().put("page",page);
     }
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    @RequiresPermissions("gro:save")
+    @RequiresPermissions("pro:save")
     public R save(GroupEntity groupEntity){
         groupEntity.setGroupId(UUID.randomUUID().toString().replace("-", ""));
         groupEntity.setUserId(getUserId());
@@ -40,7 +40,7 @@ public class GroupController extends AbstractController{
         return R.ok();
     }
     @RequestMapping(value = "update",method = RequestMethod.POST)
-    @RequiresPermissions("gro:update")
+    @RequiresPermissions("pro:update")
     public R update(GroupEntity groupEntity){
         if(StringUtils.isBlank(groupEntity.getGroupId())|| "".equals(groupEntity.getGroupId())){
             return R.error("分组id不能为空");
@@ -55,7 +55,7 @@ public class GroupController extends AbstractController{
     }
     //删除分组
     @RequestMapping(value = "delete",method = RequestMethod.POST)
-    @RequiresPermissions("gro:delete")
+    @RequiresPermissions("pro:delete")
     public R delete(@RequestParam("groupId") String groupId){
         GroupEntity groupEntity = new GroupEntity();
         groupEntity.setIsDel(1);
@@ -67,14 +67,14 @@ public class GroupController extends AbstractController{
         return R.ok();
     }
     @RequestMapping(value = "info/{groupId}",method = RequestMethod.GET)
-    @RequiresPermissions("gro:info")
+    @RequiresPermissions("pro:info")
     public R info(@PathVariable("groupId") String groupId){
         GroupEntity groupEntity = groupService.queryInfo(groupId);
         return R.ok().put("group",groupEntity);
     }
 
     @RequestMapping(value = "/groupList/{projectId}",method = RequestMethod.GET)
-    /*@RequiresPermissions("dev:add,dev:update")*/
+    @RequiresPermissions("pro:list")
     public R queryGroupList(@PathVariable("projectId")String projectId){
         List<GroupEntity> groupEntityList = groupService.queryByProjectId(projectId);
         return R.ok().put("groupList",groupEntityList);

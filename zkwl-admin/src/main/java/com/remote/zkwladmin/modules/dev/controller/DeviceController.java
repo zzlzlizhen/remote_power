@@ -21,13 +21,13 @@ public class DeviceController extends AbstractController{
     @Autowired
     DeviceService deviceService;
     @RequestMapping(value = "/list",method = RequestMethod.GET)
-    @RequiresPermissions("dev:list")
+    @RequiresPermissions("pro:list")
     public R queryPageList(@RequestParam Map<String,Object> params){
         PageUtils page = deviceService.queryPage(params);
         return R.ok().put("page",page);
     }
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    @RequiresPermissions("dev:save")
+    @RequiresPermissions("pro:save")
     public R save(DeviceEntity deviceEntity){
         deviceEntity.setDeviceId(UUID.randomUUID().toString().replace("-", ""));
         deviceEntity.setUserId(getUserId());
@@ -40,7 +40,7 @@ public class DeviceController extends AbstractController{
         return R.ok();
     }
     @RequestMapping(value = "update",method = RequestMethod.POST)
-    @RequiresPermissions("dev:update")
+    @RequiresPermissions("pro:update")
     public R update(DeviceEntity deviceEntity){
         if(StringUtils.isBlank(deviceEntity.getDeviceId())|| "".equals(deviceEntity.getDeviceId())){
             return R.error("设备id不能为空");
@@ -56,7 +56,7 @@ public class DeviceController extends AbstractController{
     }
     //删除改项目
     @RequestMapping(value = "/delete",method = RequestMethod.POST)
-    @RequiresPermissions("dev:delete")
+    @RequiresPermissions("pro:delete")
     public R delete(@RequestParam("deviceId") String deviceId){
         DeviceEntity deviceEntity = new DeviceEntity();
         deviceEntity.setDeviceId(deviceId);
@@ -68,7 +68,7 @@ public class DeviceController extends AbstractController{
         return R.ok();
     }
     @RequestMapping(value = "/info/{deviceId}",method = RequestMethod.GET)
-    @RequiresPermissions("dev:info")
+    @RequiresPermissions("pro:info")
     public R info(@PathVariable("deviceId") String deviceId){
         DeviceEntity deviceEntity = deviceService.queryInfo(deviceId);
         return R.ok().put("device",deviceEntity);
