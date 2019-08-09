@@ -161,6 +161,10 @@ var vm = new Vue({
             this.selectedType = this.types[0].type;*/
 
         },
+        queryGroup:function () {
+            var projectId = $('#projectId').val();
+            window.location.href=baseURL+"/modules/gro/group.html?projectId="+projectId;
+        },
         query: function () {
             vm.reload();
         },
